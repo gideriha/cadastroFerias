@@ -1,0 +1,306 @@
+/* Estilo geral do corpo */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Estilo para destacar o dia atual no calendário */
+.highlight-today {
+    background-color: #94a2a0;
+    /* Cor de fundo para destacar o dia atual */
+    color: white;
+    /* Cor do texto para contraste */
+    font-weight: bold;
+    /* Negrito para destacar o dia */
+    text-align: center;
+    padding: 10px;
+    /* Ajuste de padding para cobrir toda a célula */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Adicionar sombra interna */
+    border-radius: 0;
+    /* Sem bordas arredondadas para cobrir toda a célula */
+}
+
+/* Container principal */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo para o logo */
+.logo {
+    width: 150px;
+    height: auto;
+    display: block;
+    margin: 0 0 20px 0;
+    /* Remover alinhamento central e ajustar margens */
+}
+
+/* Títulos */
+h1,
+h2 {
+    color: #333;
+}
+
+/* Estilo do formulário */
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilo dos rótulos */
+label {
+    margin: 10px 0 5px;
+}
+
+/* Estilo dos campos de entrada */
+input[type="text"],
+input[type="date"],
+select {
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Estilo dos botões */
+button {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Estilo da tabela do calendário */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th,
+td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: top;
+    /* Alinhar o conteúdo no topo da célula */
+    word-wrap: break-word;
+    /* Quebra de palavras */
+}
+
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    word-wrap: break-word;
+    /* Garante que o texto no tooltip também quebre */
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 180px;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 9999;
+    bottom: 125%;
+    /* Posiciona o tooltip acima do elemento pai */
+    left: 50%;
+    margin-left: -90px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+/* Show the tooltip text when hovering */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Estilo do modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+
+/* Fechar modal */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Estilos para exibir calendário e lista lado a lado */
+.calendario-lista-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Estilo da lista de férias */
+#lista-ferias {
+    width: 30%;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+#ferias-lista {
+    list-style-type: none;
+    padding: 0;
+}
+
+/* Reduzindo o tamanho da lista de profissionais de férias */
+#ferias-lista li {
+    background-color: #007BFF;
+    color: white;
+    padding: 4px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    font-size: 12px;
+    line-height: 1.2;
+    position: relative;
+}
+
+/* Tooltip para lista */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+/* Tooltip text */
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 180px;
+    background-color: black;
+    color: #fff;
+    text-align: left;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 9999;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -90px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 12px;
+}
+
+/* Tooltip arrow */
+.tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: black transparent transparent transparent;
+}
+
+/* Show the tooltip text when hovering */
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Estilização geral para responsividade */
+.container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Para telas menores (smartphones) */
+@media only screen and (max-width: 768px) {
+    .calendario-lista-container {
+        flex-direction: column;
+    }
+
+    #lista-ferias {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    table {
+        font-size: 12px;
+        /* Reduzir tamanho da fonte em telas menores */
+    }
+
+    button {
+        width: 100%;
+        padding: 8px;
+        font-size: 14px;
+    }
+}
+
+/* Para telas maiores (desktop e tablets) */
+@media only screen and (min-width: 769px) {
+    .calendario-lista-container {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    #lista-ferias {
+        width: 30%;
+    }
+}

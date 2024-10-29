@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Férias e Day Off</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Firebase SDK -->
+    <script defer src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app-compat.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore-compat.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Adicionando o logo do banQi - -->
+        <img src="https://banqi.com.br/assets/img/ui/logo-internas.svg" alt="Logo do banQi" class="logo" />
+
+        <h1>Cadastro de Férias e Day Off</h1>
+
+        <!-- Formulário de Cadastro -->
+        <form id="cadastro-form">
+            <label for="nome">Nome do Profissional:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="squad">Squad:</label>
+            <input type="text" id="squad" name="squad" required>
+
+            <label for="tipo">Tipo:</label>
+            <select id="tipo" name="tipo" required>
+                <option value="Day Off">Day Off</option>
+                <option value="Férias">Férias</option>
+                <option value="Licença/Atestado">Licença/Atestado</option>
+            </select>
+
+            <label for="data-inicio">Data de Início:</label>
+            <input type="date" id="data-inicio" name="data-inicio" required>
+
+            <label for="data-fim">Data de Término:</label>
+            <input type="date" id="data-fim" name="data-fim" required>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <!-- Botão de Exportação CSV -->
+        <button id="export-csv">Exportar Férias para CSV</button>
+
+        <!-- Área de calendário e lista -->
+        <div class="calendario-lista-container">
+            <!-- Calendário -->
+            <div id="calendario">
+                <h2 id="mes-ano"></h2>
+                <button id="mes-anterior">← Anterior</button>
+                <button id="mes-posterior">Próximo →</button>
+                <table id="tabela-calendario">
+                    <thead>
+                        <tr>
+                            <th>Dom</th>
+                            <th>Seg</th>
+                            <th>Ter</th>
+                            <th>Qua</th>
+                            <th>Qui</th>
+                            <th>Sex</th>
+                            <th>Sáb</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dias-calendario"></tbody>
+                </table>
+            </div>
+
+            <!-- Lista de profissionais de férias -->
+            <div id="lista-ferias">
+                Profissionais de Férias:
+                <ul id="ferias-lista">
+                    <!-- A lista será gerada dinamicamente -->
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para editar dados do profissional -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Editar Informações</h2>
+            <form id="edit-form">
+                <label for="edit-nome">Nome do Profissional:</label>
+                <input type="text" id="edit-nome" name="edit-nome" required>
+
+                <label for="edit-squad">Squad:</label>
+                <input type="text" id="edit-squad" name="edit-squad" required>
+
+                <label for="edit-tipo">Tipo:</label>
+                <select id="edit-tipo" name="edit-tipo" required>
+                    <option value="Day Off">Day Off</option>
+                    <option value="Férias">Férias</option>
+                </select>
+
+                <label for="edit-data-inicio">Data de Início:</label>
+                <input type="date" id="edit-data-inicio" name="edit-data-inicio" required>
+
+                <label for="edit-data-fim">Data de Término:</label>
+                <input type="date" id="edit-data-fim" name="edit-data-fim" required>
+
+                <button type="submit">Salvar Alterações</button>
+            </form>
+            <!-- Botão para excluir -->
+            <button id="delete-button" style="background-color: red; color: white; margin-top: 10px;">Excluir</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
