@@ -6,109 +6,109 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Controle de Férias e Day Off</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- Firebase SDK -->
-    <script defer src="https://www.gstatic.com/firebasejs/9.10.0/firebase-app-compat.js"></script>
-    <script defer src="https://www.gstatic.com/firebasejs/9.10.0/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
-    <div class="container">
-        <!-- Adicionando o logo do banQi - -->
-        <img src="https://banqi.com.br/assets/img/ui/logo-internas.svg" alt="Logo do banQi" class="logo" />
+    <div id="app" class="container">
+        <!-- Logo -->
+        <img src="https://navita.com.br/wp-content/webp-express/webp-images/uploads/2023/04/Logo-Navita-Enghouse.png.webp" alt="Logo do banQi" class="logo" />
 
         <h1>Cadastro de Férias e Day Off</h1>
 
         <!-- Formulário de Cadastro -->
-        <form id="cadastro-form">
+        <form id="cadastro-form" @submit.prevent="cadastrarProfissional">
             <label for="nome">Nome do Profissional:</label>
-            <input type="text" id="nome" name="nome" required>
+            <input type="text" v-model="novoProfissional.nome" required>
 
             <label for="squad">Squad:</label>
-            <input type="text" id="squad" name="squad" required>
+            <input type="text" v-model="novoProfissional.squad" required>
 
             <label for="tipo">Tipo:</label>
-            <select id="tipo" name="tipo" required>
+            <select v-model="novoProfissional.tipo" required>
                 <option value="Day Off">Day Off</option>
                 <option value="Férias">Férias</option>
                 <option value="Licença/Atestado">Licença/Atestado</option>
             </select>
 
             <label for="data-inicio">Data de Início:</label>
-            <input type="date" id="data-inicio" name="data-inicio" required>
+            <input type="date" v-model="novoProfissional.dataInicio" required>
 
             <label for="data-fim">Data de Término:</label>
-            <input type="date" id="data-fim" name="data-fim" required>
+            <input type="date" v-model="novoProfissional.dataFim" required>
 
             <button type="submit">Cadastrar</button>
         </form>
 
-        <!-- Botão de Exportação CSV -->
-        <button id="export-csv">Exportar Férias para CSV</button>
-
-        <!-- Área de calendário e lista -->
         <div class="calendario-lista-container">
             <!-- Calendário -->
             <div id="calendario">
-                <h2 id="mes-ano"></h2>
-                <button id="mes-anterior">← Anterior</button>
-                <button id="mes-posterior">Próximo →</button>
-                <table id="tabela-calendario">
+                <h2>Calendário</h2>
+                <table>
                     <thead>
                         <tr>
-                            <th>Dom</th>
-                            <th>Seg</th>
-                            <th>Ter</th>
-                            <th>Qua</th>
-                            <th>Qui</th>
-                            <th>Sex</th>
-                            <th>Sáb</th>
+                            <th v-for="dia in diasSemana" :key="dia">{{ dia }}</th>
                         </tr>
                     </thead>
-                    <tbody id="dias-calendario"></tbody>
+                    <tbody>
+                        <tr v-for="semana in semanas" :key="semana">
+                            <td v-for="dia in semana" :key="dia.data" :class="dia.classes">
+                                <span>{{ dia.diaMes }}</span>
+                                <div v-for="profissional in dia.profissionais" :key="profissional.nome"
+                                    :style="{ color: profissional.cor }">
+                                    {{ profissional.nome }}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
-
+        
             <!-- Lista de profissionais de férias -->
             <div id="lista-ferias">
-                Profissionais de Férias:
-                <ul id="ferias-lista">
-                    <!-- A lista será gerada dinamicamente -->
+                <h2>Profissionais de Férias:</h2>
+                <ul>
+                    <li v-for="(profissional, index) in profissionais" :key="index">
+                        {{ profissional.nome }} - {{ profissional.squad }} - {{ profissional.tipo }}
+                        ({{ profissional.dataInicio }} a {{ profissional.dataFim }})
+                        <button @click="editarProfissional(index)">Editar</button>
+                        <button @click="excluirProfissional(index)" style="color: red;">Excluir</button>
+                    </li>
                 </ul>
             </div>
         </div>
-    </div>
 
-    <!-- Modal para editar dados do profissional -->
-    <div id="edit-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Editar Informações</h2>
-            <form id="edit-form">
-                <label for="edit-nome">Nome do Profissional:</label>
-                <input type="text" id="edit-nome" name="edit-nome" required>
+        <!-- Modal de Edição -->
+        <div v-if="exibirModalEdicao" class="modal">
+            <div class="modal-content">
+                <span @click="fecharModal" class="close">&times;</span>
+                <h2>Editar Informações</h2>
+                <form @submit.prevent="salvarEdicao">
+                    <label for="edit-nome">Nome do Profissional:</label>
+                    <input type="text" v-model="profissionalEmEdicao.nome" required>
 
-                <label for="edit-squad">Squad:</label>
-                <input type="text" id="edit-squad" name="edit-squad" required>
+                    <label for="edit-squad">Squad:</label>
+                    <input type="text" v-model="profissionalEmEdicao.squad" required>
 
-                <label for="edit-tipo">Tipo:</label>
-                <select id="edit-tipo" name="edit-tipo" required>
-                    <option value="Day Off">Day Off</option>
-                    <option value="Férias">Férias</option>
-                </select>
+                    <label for="edit-tipo">Tipo:</label>
+                    <select v-model="profissionalEmEdicao.tipo" required>
+                        <option value="Day Off">Day Off</option>
+                        <option value="Férias">Férias</option>
+                        <option value="Licença/Atestado">Licença/Atestado</option>
+                    </select>
 
-                <label for="edit-data-inicio">Data de Início:</label>
-                <input type="date" id="edit-data-inicio" name="edit-data-inicio" required>
+                    <label for="edit-data-inicio">Data de Início:</label>
+                    <input type="date" v-model="profissionalEmEdicao.dataInicio" required>
 
-                <label for="edit-data-fim">Data de Término:</label>
-                <input type="date" id="edit-data-fim" name="edit-data-fim" required>
+                    <label for="edit-data-fim">Data de Término:</label>
+                    <input type="date" v-model="profissionalEmEdicao.dataFim" required>
 
-                <button type="submit">Salvar Alterações</button>
-            </form>
-            <!-- Botão para excluir -->
-            <button id="delete-button" style="background-color: red; color: white; margin-top: 10px;">Excluir</button>
+                    <button type="submit">Salvar Alterações</button>
+                </form>
+            </div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
     <script src="script.js"></script>
 </body>
 
